@@ -4,6 +4,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Chessboard } from "react-chessboard";
 import { Chess } from "chess.js";
 import { fetchGame } from "@/api/games";
+import { useTheme } from "@/hooks/useTheme";
+import { getBoardTheme } from "@/lib/theme";
+import { symbolPieces } from "@/components/chess-pieces";
 
 export default function GameDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -62,6 +65,10 @@ export default function GameDetailPage() {
   const loading = gameQuery.isLoading;
   const error = gameQuery.isError;
 
+  const { settings } = useTheme();
+  const boardTheme = getBoardTheme(settings.boardThemeId);
+  const pieces = settings.pieceStyleId === "symbol" ? symbolPieces : undefined;
+
   if (loading) return <div className="p-8 text-sm text-muted-foreground">Loading game…</div>;
   if (error) return <div className="p-8 text-sm text-red-600">Error loading game.</div>;
   if (!game) return null;
@@ -116,6 +123,9 @@ export default function GameDetailPage() {
               position: currentFen,
               boardOrientation: game.userColor === "black" ? "black" : "white",
               allowDragging: false,
+              darkSquareStyle: { backgroundColor: boardTheme.darkSquare },
+              lightSquareStyle: { backgroundColor: boardTheme.lightSquare },
+              ...(pieces ? { pieces } : {}),
             }} />
             {/* Navigation */}
             <div className="mt-4 flex items-center justify-center gap-2">

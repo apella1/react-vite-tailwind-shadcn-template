@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { fetchGames } from "@/api/games";
@@ -61,6 +61,13 @@ export default function GamesPage() {
   const [username, setUsername] = useState("");
   const [syncId, setSyncId] = useState<string | null>(null);
   const [filters, setFilters] = useState({ result: "", color: "", timeClass: "" });
+
+  // Save username to localStorage for the landing page stats
+  useEffect(() => {
+    if (username.trim()) {
+      localStorage.setItem("tempo-username", username.trim());
+    }
+  }, [username]);
 
   const gamesQuery = useQuery({
     queryKey: ["games", username, filters],
