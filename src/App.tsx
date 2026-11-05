@@ -1,5 +1,7 @@
 import { BrowserRouter, NavLink, Route, Routes } from "react-router-dom";
 import StatusPage from "@/pages/StatusPage";
+import GamesPage from "@/pages/GamesPage";
+import GameDetailPage from "@/pages/GameDetailPage";
 
 function Nav() {
   const linkClass = ({ isActive }: { isActive: boolean }) =>
@@ -15,7 +17,9 @@ function Nav() {
           <NavLink to="/" end className={linkClass}>
             Status
           </NavLink>
-          {/* Additional nav links added per phase */}
+          <NavLink to="/games" className={linkClass}>
+            Games
+          </NavLink>
         </nav>
       </div>
     </header>
@@ -30,7 +34,8 @@ export default function App() {
         <main>
           <Routes>
             <Route path="/" element={<StatusPage />} />
-            {/* Routes added per phase */}
+            <Route path="/games" element={<GamesPage />} />
+            <Route path="/games/:id" element={<GameDetailPage />} />
           </Routes>
         </main>
       </div>

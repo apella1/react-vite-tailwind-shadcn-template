@@ -7,4 +7,6 @@ export const POLLING = {
   STATUS_PAGE: 10_000,
   /** Job progress summary while jobs are pending or running */
   JOB_SUMMARY: 3_000,
+  /** Sync progress while a sync is running */
+  SYNC_PROGRESS: 2_000,
 } as const;
