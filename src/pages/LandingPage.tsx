@@ -1,41 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { fetchGames } from "@/api/games";
-import { useTheme } from "@/hooks/useTheme";
-import { BOARD_THEMES, PIECE_STYLES } from "@/lib/theme";
-
-function ThemeSelector() {
-  const { settings, update } = useTheme();
-
-  return (
-    <div className="flex items-center gap-3 text-sm">
-      <label className="text-muted-foreground">Board:</label>
-      <select
-        value={settings.boardThemeId}
-        onChange={(e) => update({ ...settings, boardThemeId: e.target.value })}
-        className="rounded border px-2 py-1"
-      >
-        {BOARD_THEMES.map((t) => (
-          <option key={t.id} value={t.id}>{t.name}</option>
-        ))}
-      </select>
-      <label className="text-muted-foreground">Pieces:</label>
-      <select
-        value={settings.pieceStyleId}
-        onChange={(e) => update({ ...settings, pieceStyleId: e.target.value })}
-        className="rounded border px-2 py-1"
-      >
-        {PIECE_STYLES.map((p) => (
-          <option key={p.id} value={p.id}>{p.name}</option>
-        ))}
-      </select>
-    </div>
-  );
-}
 
 function FeatureCard({ icon, title, desc }: { icon: string; title: string; desc: string }) {
   return (
-    <div className="rounded-lg border p-4">
+    <div className="rounded-lg border p-4 transition hover:border-foreground/20 hover:shadow-sm">
       <div className="mb-2 text-2xl">{icon}</div>
       <h3 className="font-semibold">{title}</h3>
       <p className="mt-1 text-sm text-muted-foreground">{desc}</p>
@@ -87,7 +56,7 @@ export default function LandingPage() {
           onClick={() => navigate("/games")}
           className="rounded-lg bg-primary px-6 py-2.5 text-sm font-medium text-primary-foreground transition hover:opacity-90"
         >
-          {hasGames ? "Browse Games" : "Sync Your Games →"}
+          {hasGames ? "Browse Games →" : "Sync Your Games →"}
         </button>
       </div>
 
@@ -121,12 +90,6 @@ export default function LandingPage() {
           title="Weakness Profile"
           desc="Mistakes classified by type and tracked over time so you know what to work on."
         />
-      </div>
-
-      {/* Theme selector */}
-      <div className="mt-12 rounded-lg border p-4">
-        <h2 className="mb-3 text-sm font-semibold">Appearance</h2>
-        <ThemeSelector />
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import { BrowserRouter, NavLink, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Link, NavLink, Route, Routes } from "react-router-dom";
 import LandingPage from "@/pages/LandingPage";
 import StatusPage from "@/pages/StatusPage";
 import GamesPage from "@/pages/GamesPage";
@@ -13,11 +13,10 @@ function Nav() {
   return (
     <header className="border-b">
       <div className="mx-auto flex max-w-5xl items-center gap-6 px-4 py-3">
-        <span className="text-base font-semibold">♟ Tempo</span>
+        <Link to="/" className="text-base font-semibold transition hover:opacity-80">
+          ♟ Tempo
+        </Link>
         <nav className="flex gap-4">
-          <NavLink to="/" end className={linkClass}>
-            Home
-          </NavLink>
           <NavLink to="/games" className={linkClass}>
             Games
           </NavLink>
