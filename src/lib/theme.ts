@@ -34,7 +34,9 @@ export const PIECE_STYLES: PieceStyle[] = [
   { id: "symbol", name: "Symbol" },
 ];
 
-const STORAGE_KEY = "tempo-theme";
+const STORAGE_KEY = STORAGE_KEYS.theme;
+
+import { STORAGE_KEYS } from "@/lib/brand";
 
 export interface ThemeSettings {
   boardThemeId: string;

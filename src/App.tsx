@@ -3,6 +3,7 @@ import LandingPage from "@/pages/LandingPage";
 import StatusPage from "@/pages/StatusPage";
 import GamesPage from "@/pages/GamesPage";
 import GameDetailPage from "@/pages/GameDetailPage";
+import { APP } from "@/lib/brand";
 
 function Nav() {
   const linkClass = ({ isActive }: { isActive: boolean }) =>
@@ -14,7 +15,7 @@ function Nav() {
     <header className="border-b">
       <div className="mx-auto flex max-w-5xl items-center gap-6 px-4 py-3">
         <Link to="/" className="text-base font-semibold transition hover:opacity-80">
-          ♟ Tempo
+          {APP.icon} {APP.name}
         </Link>
         <nav className="flex gap-4">
           <NavLink to="/games" className={linkClass}>

@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { fetchGames } from "@/api/games";
+import { APP, FEATURES, STORAGE_KEYS } from "@/lib/brand";
 
 function FeatureCard({ icon, title, desc }: { icon: string; title: string; desc: string }) {
   return (
@@ -14,7 +15,7 @@ function FeatureCard({ icon, title, desc }: { icon: string; title: string; desc:
 
 export default function LandingPage() {
   const navigate = useNavigate();
-  const storedUsername = localStorage.getItem("tempo-username") ?? "";
+  const storedUsername = localStorage.getItem(STORAGE_KEYS.username) ?? "";
 
   const gamesQuery = useQuery({
     queryKey: ["games", storedUsername, { size: 1 }],
@@ -29,10 +30,10 @@ export default function LandingPage() {
     <div className="mx-auto max-w-3xl px-4 py-12">
       {/* Hero */}
       <div className="mb-12 text-center">
-        <div className="mb-4 text-5xl">♟</div>
-        <h1 className="text-4xl font-bold tracking-tight">Tempo</h1>
+        <div className="mb-4 text-5xl">{APP.icon}</div>
+        <h1 className="text-4xl font-bold tracking-tight">{APP.name}</h1>
         <p className="mt-2 text-lg text-muted-foreground">
-          Train on your own games — not generic puzzles.
+          {APP.tagline}
         </p>
       </div>
 
@@ -62,34 +63,15 @@ export default function LandingPage() {
 
       {/* Feature cards */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <FeatureCard
-          icon="📥"
-          title="Import"
-          desc="Sync your chess.com games automatically. Incremental sync keeps API calls minimal on re-sync."
-        />
-        <FeatureCard
-          icon="🔍"
-          title="Analyze"
-          desc="Stockfish evaluates every move. Win-probability loss classifies blunders, mistakes, and inaccuracies."
-        />
-        <FeatureCard
-          icon="🎯"
-          title="Train"
-          desc="Puzzles generated from your own mistakes. Spaced repetition targets your weakest patterns."
-        />
+        {FEATURES.slice(0, 3).map((f) => (
+          <FeatureCard key={f.title} icon={f.icon} title={f.title} desc={f.desc} />
+        ))}
       </div>
 
       <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <FeatureCard
-          icon="🤖"
-          title="AI Reviews"
-          desc="A local LLM writes plain-English coaching reviews for every game, grounded in engine facts."
-        />
-        <FeatureCard
-          icon="📊"
-          title="Weakness Profile"
-          desc="Mistakes classified by type and tracked over time so you know what to work on."
-        />
+        {FEATURES.slice(3).map((f) => (
+          <FeatureCard key={f.title} icon={f.icon} title={f.title} desc={f.desc} />
+        ))}
       </div>
     </div>
   );

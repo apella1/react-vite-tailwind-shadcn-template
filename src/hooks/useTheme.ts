@@ -5,7 +5,9 @@ import { loadTheme, saveTheme, type ThemeSettings } from "@/lib/theme";
  * Hook for reading and updating the board/piece theme.
  * Persists to localStorage and syncs across components via a custom event.
  */
-const THEME_EVENT = "tempo-theme-change";
+import { STORAGE_KEYS } from "@/lib/brand";
+
+const THEME_EVENT = STORAGE_KEYS.themeEvent;
 
 export function useTheme() {
   const [settings, setSettings] = useState<ThemeSettings>(() => loadTheme());

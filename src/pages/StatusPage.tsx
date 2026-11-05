@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchStatus } from "@/api/status";
 import { POLLING } from "@/lib/polling";
 import type { OllamaStatus, StatusResponse } from "@/types/status";
+import { APP, PAGES } from "@/lib/brand";
 
 type ServiceLevel = "ok" | "stale" | "down" | "model_not_ready" | "unknown";
 
@@ -80,8 +81,8 @@ export default function StatusPage() {
   return (
     <div className="mx-auto max-w-xl px-4 py-10">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold">Chess Trainer</h1>
-        <p className="mt-1 text-sm text-muted-foreground">System status</p>
+        <h1 className="text-2xl font-bold">{APP.name}</h1>
+        <p className="mt-1 text-sm text-muted-foreground">{PAGES.status.subtitle}</p>
       </div>
 
       {isLoading && (

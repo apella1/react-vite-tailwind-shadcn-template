@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { fetchGames } from "@/api/games";
 import { startSync, fetchSyncProgress } from "@/api/sync";
 import { POLLING } from "@/lib/polling";
+import { STORAGE_KEYS } from "@/lib/brand";
 import type { GameSummary, PagedGames } from "@/types/games";
 import type { SyncProgress } from "@/types/sync";
 
@@ -82,7 +83,7 @@ export default function GamesPage() {
 
   useEffect(() => {
     if (username.trim()) {
-      localStorage.setItem("tempo-username", username.trim());
+      localStorage.setItem(STORAGE_KEYS.username, username.trim());
     }
   }, [username]);
 
