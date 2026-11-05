@@ -5,6 +5,7 @@ import { fetchGames } from "@/api/games";
 import { startSync, fetchSyncProgress } from "@/api/sync";
 import { POLLING } from "@/lib/polling";
 import { STORAGE_KEYS } from "@/lib/brand";
+import JobProgress from "@/components/JobProgress";
 import type { GameSummary, PagedGames } from "@/types/games";
 import type { SyncProgress } from "@/types/sync";
 
@@ -135,7 +136,10 @@ export default function GamesPage() {
       <div className="mb-6 flex items-center justify-between">
         <h1 className="text-2xl font-bold">Games</h1>
         {games && (
-          <span className="text-sm text-muted-foreground">{games.totalElements} total</span>
+          <div className="flex items-center gap-4">
+            <span className="text-sm text-muted-foreground">{games.totalElements} total</span>
+            <JobProgress />
+          </div>
         )}
       </div>
 

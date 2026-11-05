@@ -13,9 +13,23 @@ export interface GameSummary {
   analysisStatus: string;
 }
 
+export interface MoveWithEval {
+  ply: number;
+  color: string;
+  san: string;
+  fenAfter: string;
+  classification: string | null;
+  winPctBefore: number | null;
+  winPctAfter: number | null;
+  winPctLoss: number | null;
+  bestUci: string | null;
+  isMistake: boolean;
+}
+
 export interface GameDetail extends GameSummary {
   termination: string | null;
   pgn: string;
+  moves: MoveWithEval[];
 }
 
 export interface PagedGames {
