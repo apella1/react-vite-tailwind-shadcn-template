@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { fetchStatus } from "@/api/status";
 import { POLLING } from "@/lib/polling";
-import type { StatusResponse } from "@/types/status";
+import type { OllamaStatus, StatusResponse } from "@/types/status";
 
-type ServiceLevel = "ok" | "stale" | "down" | "unknown";
+type ServiceLevel = "ok" | "stale" | "down" | "model_not_ready" | "unknown";
 
 interface BadgeProps {
   status: ServiceLevel;
@@ -14,13 +14,21 @@ function StatusBadge({ status }: BadgeProps) {
     ok: "bg-green-100 text-green-800 border-green-300",
     stale: "bg-yellow-100 text-yellow-800 border-yellow-300",
     down: "bg-red-100 text-red-800 border-red-300",
+    model_not_ready: "bg-amber-100 text-amber-800 border-amber-300",
     unknown: "bg-gray-100 text-gray-600 border-gray-300",
+  };
+  const labels: Record<ServiceLevel, string> = {
+    ok: "ok",
+    stale: "stale",
+    down: "down",
+    model_not_ready: "downloading",
+    unknown: "unknown",
   };
   return (
     <span
       className={`inline-block rounded border px-2 py-0.5 text-xs font-semibold uppercase tracking-wide ${styles[status]}`}
     >
-      {status}
+      {labels[status]}
     </span>
   );
 }
@@ -47,11 +55,19 @@ function buildWorkerDetail(data: StatusResponse): string | undefined {
   const { worker } = data;
   if (worker.status === "down") return "No heartbeat received";
   if (worker.lastSeenSeconds != null) {
-    const detail = `Last heartbeat ${worker.lastSeenSeconds}s ago`;
+    const base = `Last heartbeat ${worker.lastSeenSeconds}s ago`;
     const job = worker.details.currentJobKind;
-    return job ? `${detail} · Running: ${job}` : detail;
+    return job ? `${base} · Running: ${job}` : base;
   }
   return undefined;
+}
+
+function buildOllamaDetail(ollama: OllamaStatus): string | undefined {
+  const modelLabel = ollama.model ? `Model: ${ollama.model}` : null;
+  if (ollama.status === "ok") return modelLabel ?? undefined;
+  // For all non-ok states, show the detail from the API, with model name appended if known
+  const parts = [ollama.detail, modelLabel].filter(Boolean);
+  return parts.length > 0 ? parts.join(" · ") : undefined;
 }
 
 export default function StatusPage() {
@@ -88,15 +104,9 @@ export default function StatusPage() {
             detail={buildWorkerDetail(data)}
           />
           <ServiceRow
-            name="Ollama (LLM)"
-            status={data.ollama}
-            detail={
-              data.ollama === "unknown"
-                ? "Status unknown — worker may be down"
-                : data.ollama === "down"
-                  ? "Not reachable at host.docker.internal:11434"
-                  : undefined
-            }
+            name={`Ollama${data.ollama.model ? ` (${data.ollama.model})` : ""}`}
+            status={data.ollama.status}
+            detail={buildOllamaDetail(data.ollama)}
           />
         </div>
       )}
