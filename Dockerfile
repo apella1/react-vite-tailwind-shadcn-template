@@ -25,7 +25,7 @@ RUN pnpm install --frozen-lockfile
 # Copy the rest of the source with correct ownership
 COPY --chown=node:node . .
 
-EXPOSE 5173
+EXPOSE 5176
 
 # --host 0.0.0.0 is required so Vite's port is accessible outside the container
 CMD ["pnpm", "dev", "--host", "0.0.0.0"]

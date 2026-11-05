@@ -13,17 +13,17 @@ export default defineConfig({
   },
   server: {
     host: "0.0.0.0",   // required for Docker port binding
-    port: 5173,
+    port: 5176,
     proxy: {
       // Proxy /api and /actuator to the Spring API.
       // VITE_API_PROXY_TARGET is set in Docker Compose (uses "api" service name).
-      // Falls back to localhost:8080 for running Vite directly on the host.
+      // Falls back to localhost:8084 for running Vite directly on the host.
       "/api": {
-        target: process.env.VITE_API_PROXY_TARGET ?? "http://localhost:8080",
+        target: process.env.VITE_API_PROXY_TARGET ?? "http://localhost:8084",
         changeOrigin: true,
       },
       "/actuator": {
-        target: process.env.VITE_API_PROXY_TARGET ?? "http://localhost:8080",
+        target: process.env.VITE_API_PROXY_TARGET ?? "http://localhost:8084",
         changeOrigin: true,
       },
     },
