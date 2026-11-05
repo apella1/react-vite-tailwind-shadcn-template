@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { fetchGames } from "@/api/games";
+import { fetchUsers } from "@/api/users";
 import { startSync, fetchSyncProgress } from "@/api/sync";
 import { POLLING } from "@/lib/polling";
 import { STORAGE_KEYS } from "@/lib/brand";
@@ -76,9 +77,34 @@ function SyncProgressDisplay({ progress }: { progress: SyncProgress }) {
   );
 }
 
+function SyncedUsersDropdown({ onSelect }: { onSelect: (username: string) => void }) {
+  const { data: users } = useQuery({
+    queryKey: ["users"],
+    queryFn: fetchUsers,
+    staleTime: 60_000,
+  });
+
+  if (!users || users.length === 0) return null;
+
+  return (
+    <div className="mb-4 flex flex-wrap gap-2">
+      <span className="text-xs text-muted-foreground self-center">Synced:</span>
+      {users.map((u) => (
+        <button
+          key={u.username}
+          onClick={() => onSelect(u.username)}
+          className="rounded-full border px-3 py-1 text-xs font-medium transition hover:bg-muted"
+        >
+          {u.displayName} <span className="text-muted-foreground">({u.gameCount})</span>
+        </button>
+      ))}
+    </div>
+  );
+}
+
 export default function GamesPage() {
   const navigate = useNavigate();
-  const [username, setUsername] = useState("");
+  const [username, setUsername] = useState(() => localStorage.getItem(STORAGE_KEYS.username) ?? "");
   const [syncId, setSyncId] = useState<string | null>(null);
   const [filters, setFilters] = useState({ result: "", color: "", timeClass: "" });
 
@@ -161,6 +187,9 @@ export default function GamesPage() {
           {syncMutation.isPending ? "Starting…" : "Sync"}
         </button>
       </div>
+
+      {/* Synced users dropdown */}
+      <SyncedUsersDropdown onSelect={setUsername} />
 
       {/* Sync progress */}
       {syncProgressQuery.data && (
