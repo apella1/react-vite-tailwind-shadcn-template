@@ -9,6 +9,7 @@ import { getBoardTheme } from "@/lib/theme";
 import { symbolPieces } from "@/components/chess-pieces";
 import ThemeSelector from "@/components/ThemeSelector";
 import EvalChart from "@/components/EvalChart";
+import ReviewPanel from "@/components/ReviewPanel";
 import type { MoveWithEval } from "@/types/games";
 
 const CLASSIFICATION_STYLES: Record<string, { bg: string; label: string }> = {
@@ -203,7 +204,7 @@ export default function GameDetailPage() {
           </div>
         </div>
 
-        {/* Right column: eval chart + move list */}
+        {/* Right column: eval chart + move list + review */}
         <div className="md:w-72">
           {/* Eval chart (only when analysis is done) */}
           {hasAnalysis && <EvalChart moves={game.moves} />}
@@ -253,6 +254,16 @@ export default function GameDetailPage() {
               ))
             )}
           </div>
+
+          {/* AI Review Panel */}
+          {id && (
+            <div className="mt-6">
+              <h2 className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                AI Review
+              </h2>
+              <ReviewPanel gameId={id} analysisStatus={game.analysisStatus} />
+            </div>
+          )}
         </div>
       </div>
     </div>
