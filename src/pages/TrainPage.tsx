@@ -20,6 +20,7 @@ export default function TrainPage() {
   const [hintSquares, setHintSquares] = useState<Record<string, React.CSSProperties>>({});
   const [solution, setSolution] = useState<string[] | null>(null);
   const [movesTried, setMovesTried] = useState<string[]>([]);
+  const [boardFen, setBoardFen] = useState<string>("start");
   const startTimeRef = useRef<number>(Date.now());
   const chessRef = useRef<Chess | null>(null);
 
@@ -44,7 +45,9 @@ export default function TrainPage() {
 
   useEffect(() => {
     if (puzzleQuery.data && status === "loading") {
-      chessRef.current = new Chess(puzzleQuery.data.fen);
+      const chess = new Chess(puzzleQuery.data.fen);
+      chessRef.current = chess;
+      setBoardFen(chess.fen());
       setStatus("playing");
       startTimeRef.current = Date.now();
     } else if (puzzleQuery.isFetched && puzzleQuery.data === null && status === "loading") {
@@ -61,6 +64,7 @@ export default function TrainPage() {
 
   const resetPuzzle = () => {
     chessRef.current = null;
+    setBoardFen("start");
     setStatus("loading");
     setHintsUsed(0);
     setHintSquares({});
@@ -74,6 +78,7 @@ export default function TrainPage() {
     setUsername(name);
     setTheme(undefined);
     chessRef.current = null;
+    setBoardFen("start");
     setStatus("loading");
     setHintsUsed(0); setHintSquares({}); setSolution(null); setMovesTried([]);
   };
@@ -81,6 +86,7 @@ export default function TrainPage() {
   const handleSelectTheme = (t: string | undefined) => {
     setTheme(t);
     chessRef.current = null;
+    setBoardFen("start");
     setStatus("loading");
     setHintsUsed(0); setHintSquares({}); setSolution(null); setMovesTried([]);
   };
@@ -111,6 +117,7 @@ export default function TrainPage() {
     const uci = `${sourceSquare}${targetSquare}`;
     const newMoves = [...movesTried, uci];
     setMovesTried(newMoves);
+    setBoardFen(chess.fen()); // ← triggers re-render with new FEN
     setHintSquares({});
 
     fetchPuzzleSolution(puzzleQuery.data!.id).then((sol) => {
@@ -229,7 +236,7 @@ export default function TrainPage() {
           <div className="mx-auto max-w-md">
             <Chessboard
               options={{
-                position: chess.fen(),
+                position: boardFen,
                 boardOrientation: puzzle.sideToMove === "black" ? "black" : "white",
                 darkSquareStyle: { backgroundColor: boardTheme.darkSquare },
                 lightSquareStyle: { backgroundColor: boardTheme.lightSquare },
