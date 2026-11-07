@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
+import { useSearchParams } from "react-router-dom";
 import { Chessboard } from "react-chessboard";
 import { Chess } from "chess.js";
 import { fetchNextPuzzle, fetchPuzzleSolution, fetchPuzzleThemes, submitAttempt } from "@/api/puzzles";
@@ -37,8 +38,10 @@ function buildSquareStyles(
 
 export default function TrainPage() {
   const storedUsername = localStorage.getItem(STORAGE_KEYS.username) ?? "";
+  const [searchParams] = useSearchParams();
+  const urlTheme = searchParams.get("theme") ?? undefined;
   const [username, setUsername] = useState(storedUsername);
-  const [theme, setTheme] = useState<string | undefined>(undefined);
+  const [theme, setTheme] = useState<string | undefined>(urlTheme);
   const [status, setStatus] = useState<Status>(storedUsername ? "loading" : "idle");
 
   // Board state

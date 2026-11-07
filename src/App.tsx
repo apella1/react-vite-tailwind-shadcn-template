@@ -4,6 +4,7 @@ import StatusPage from "@/pages/StatusPage";
 import GamesPage from "@/pages/GamesPage";
 import GameDetailPage from "@/pages/GameDetailPage";
 import TrainPage from "@/pages/TrainPage";
+import WeaknessesPage from "@/pages/WeaknessesPage";
 import { APP } from "@/lib/brand";
 
 function Nav() {
@@ -19,15 +20,10 @@ function Nav() {
           {APP.icon} {APP.name}
         </Link>
         <nav className="flex gap-4">
-          <NavLink to="/games" className={linkClass}>
-            Games
-          </NavLink>
-          <NavLink to="/train" className={linkClass}>
-            Train
-          </NavLink>
-          <NavLink to="/status" className={linkClass}>
-            Status
-          </NavLink>
+          <NavLink to="/games" className={linkClass}>Games</NavLink>
+          <NavLink to="/train" className={linkClass}>Train</NavLink>
+          <NavLink to="/weaknesses" className={linkClass}>Weaknesses</NavLink>
+          <NavLink to="/status" className={linkClass}>Status</NavLink>
         </nav>
       </div>
     </header>
@@ -45,6 +41,7 @@ export default function App() {
             <Route path="/games" element={<GamesPage />} />
             <Route path="/games/:id" element={<GameDetailPage />} />
             <Route path="/train" element={<TrainPage />} />
+            <Route path="/weaknesses" element={<WeaknessesPage />} />
             <Route path="/status" element={<StatusPage />} />
           </Routes>
         </main>

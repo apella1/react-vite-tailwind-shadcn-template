@@ -60,7 +60,7 @@ export const FEATURES = [
     icon: "📊",
     title: "Weakness Profile",
     desc: "Mistakes classified by type and tracked over time so you know what to work on.",
-    route: null,
+    route: "/weaknesses",
   },
 ] as const;
 
