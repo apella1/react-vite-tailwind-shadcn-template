@@ -3,10 +3,30 @@ import { useNavigate } from "react-router-dom";
 import { fetchGames } from "@/api/games";
 import { APP, FEATURES, STORAGE_KEYS } from "@/lib/brand";
 
-function FeatureCard({ icon, title, desc }: { icon: string; title: string; desc: string }) {
+interface FeatureCardProps {
+  icon: string;
+  title: string;
+  desc: string;
+  route: string | null;
+}
+
+function FeatureCard({ icon, title, desc, route }: FeatureCardProps) {
+  const navigate = useNavigate();
+  const clickable = route !== null;
+
   return (
-    <div className="rounded-lg border p-4 transition hover:border-foreground/20 hover:shadow-sm">
-      <div className="mb-2 text-2xl">{icon}</div>
+    <div
+      onClick={clickable ? () => navigate(route!) : undefined}
+      className={`rounded-lg border p-4 transition hover:border-foreground/20 hover:shadow-sm ${
+        clickable ? "cursor-pointer hover:bg-muted/30" : ""
+      }`}
+    >
+      <div className="mb-2 flex items-center gap-2">
+        <span className="text-2xl">{icon}</span>
+        {clickable && (
+          <span className="ml-auto text-xs text-muted-foreground opacity-60">→</span>
+        )}
+      </div>
       <h3 className="font-semibold">{title}</h3>
       <p className="mt-1 text-sm text-muted-foreground">{desc}</p>
     </div>
@@ -32,9 +52,7 @@ export default function LandingPage() {
       <div className="mb-12 text-center">
         <div className="mb-4 text-5xl">{APP.icon}</div>
         <h1 className="text-4xl font-bold tracking-tight">{APP.name}</h1>
-        <p className="mt-2 text-lg text-muted-foreground">
-          {APP.tagline}
-        </p>
+        <p className="mt-2 text-lg text-muted-foreground">{APP.tagline}</p>
       </div>
 
       {/* Quick stats */}
@@ -59,18 +77,25 @@ export default function LandingPage() {
         >
           {hasGames ? "Browse Games →" : "Sync Your Games →"}
         </button>
+        {hasGames && (
+          <button
+            onClick={() => navigate("/train")}
+            className="rounded-lg border px-6 py-2.5 text-sm font-medium transition hover:bg-muted"
+          >
+            🎯 Train
+          </button>
+        )}
       </div>
 
-      {/* Feature cards */}
+      {/* Feature cards — clickable if a route is defined */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         {FEATURES.slice(0, 3).map((f) => (
-          <FeatureCard key={f.title} icon={f.icon} title={f.title} desc={f.desc} />
+          <FeatureCard key={f.title} icon={f.icon} title={f.title} desc={f.desc} route={f.route} />
         ))}
       </div>
-
       <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
         {FEATURES.slice(3).map((f) => (
-          <FeatureCard key={f.title} icon={f.icon} title={f.title} desc={f.desc} />
+          <FeatureCard key={f.title} icon={f.icon} title={f.title} desc={f.desc} route={f.route} />
         ))}
       </div>
     </div>

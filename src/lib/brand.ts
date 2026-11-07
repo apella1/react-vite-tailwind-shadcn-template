@@ -36,26 +36,31 @@ export const FEATURES = [
     icon: "📥",
     title: "Import",
     desc: "Sync your chess.com games automatically. Incremental sync keeps API calls minimal on re-sync.",
+    route: "/games",
   },
   {
     icon: "🔍",
     title: "Analyze",
     desc: "Stockfish evaluates every move. Win-probability loss classifies blunders, mistakes, and inaccuracies.",
+    route: null,
   },
   {
     icon: "🎯",
     title: "Train",
     desc: "Puzzles generated from your own mistakes. Spaced repetition targets your weakest patterns.",
+    route: "/train",
   },
   {
     icon: "🤖",
     title: "AI Reviews",
     desc: "A local LLM writes plain-English coaching reviews for every game, grounded in engine facts.",
+    route: null,
   },
   {
     icon: "📊",
     title: "Weakness Profile",
     desc: "Mistakes classified by type and tracked over time so you know what to work on.",
+    route: null,
   },
 ] as const;
 
