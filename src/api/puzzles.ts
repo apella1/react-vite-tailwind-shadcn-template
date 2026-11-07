@@ -1,10 +1,18 @@
 import type { AttemptRequest, AttemptResponse, PuzzleDto, PuzzleSolutionDto } from "@/types/puzzles";
 
-export async function fetchNextPuzzle(username: string): Promise<PuzzleDto | null> {
-  const res = await fetch(`/api/puzzles/next?username=${encodeURIComponent(username)}`);
+export async function fetchNextPuzzle(username: string, theme?: string): Promise<PuzzleDto | null> {
+  const params = new URLSearchParams({ username });
+  if (theme) params.set("theme", theme);
+  const res = await fetch(`/api/puzzles/next?${params}`);
   if (res.status === 204) return null;
   if (!res.ok) throw new Error(`Failed to fetch puzzle: ${res.status}`);
   return res.json() as Promise<PuzzleDto>;
+}
+
+export async function fetchPuzzleThemes(username: string): Promise<string[]> {
+  const res = await fetch(`/api/puzzles/themes?username=${encodeURIComponent(username)}`);
+  if (!res.ok) throw new Error(`Failed to fetch themes: ${res.status}`);
+  return res.json() as Promise<string[]>;
 }
 
 export async function fetchPuzzleSolution(puzzleId: string): Promise<PuzzleSolutionDto> {
