@@ -75,7 +75,7 @@ export default function ReviewPanel({ gameId, analysisStatus }: Props) {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <span className="text-xs text-muted-foreground">
-            {review.model} · v{review.promptVersion}
+            {review.model} · {review.promptVersion}
           </span>
           {review.validationStatus === "flagged" && (
             <span className="rounded bg-amber-100 px-1.5 py-0.5 text-xs text-amber-700">
