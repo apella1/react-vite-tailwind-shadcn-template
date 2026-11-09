@@ -5,6 +5,7 @@ import GamesPage from "@/pages/GamesPage";
 import GameDetailPage from "@/pages/GameDetailPage";
 import TrainPage from "@/pages/TrainPage";
 import WeaknessesPage from "@/pages/WeaknessesPage";
+import SessionsPage from "@/pages/SessionsPage";
 import { APP } from "@/lib/brand";
 
 function Nav() {
@@ -23,6 +24,7 @@ function Nav() {
           <NavLink to="/games" className={linkClass}>Games</NavLink>
           <NavLink to="/train" className={linkClass}>Train</NavLink>
           <NavLink to="/weaknesses" className={linkClass}>Weaknesses</NavLink>
+          <NavLink to="/sessions" className={linkClass}>Sessions</NavLink>
           <NavLink to="/status" className={linkClass}>Status</NavLink>
         </nav>
       </div>
@@ -42,6 +44,7 @@ export default function App() {
             <Route path="/games/:id" element={<GameDetailPage />} />
             <Route path="/train" element={<TrainPage />} />
             <Route path="/weaknesses" element={<WeaknessesPage />} />
+            <Route path="/sessions" element={<SessionsPage />} />
             <Route path="/status" element={<StatusPage />} />
           </Routes>
         </main>
